@@ -160,3 +160,32 @@ function getFoodMenuUZlatehoMeceAsString() {
 
     return $result;
 }
+
+function getFoodMenuPotrafenaHusa() {
+    $url = "http://www.staropramen.cz/hospody/brno-zelny-trh";
+    $doc = file_get_html($url);
+
+    $result = "";
+    $dailyMenu = $doc->find("#denni-menu .is-open")[0];
+
+    if (!$dailyMenu) {
+        return $result;
+    }
+
+    $menu = $dailyMenu->next_sibling();
+    
+    if (!$menu) {
+        return $result;
+    }
+
+    foreach($menu->find(".menu-list li") as $day) {
+        $oneMenu = "";
+        foreach ($day->find('div') as $oneMenePartial) {
+            $oneMenu .= convertTextToUsableState($oneMenePartial->plaintext) . " ";
+        }
+
+        $result .= getResultString($oneMenu);
+    }
+
+    return $result;
+}

@@ -18,11 +18,8 @@ if (!isset($_GET['refresh'])) {
 
 // Potrafena Husa
 $title = "POTRAFENÁ HUSA";
-$url = "http://www.husabrno.cz";
-$text = getFoodMenu($url,
-    '.husazl_body_right .contentpaneopen tbody tr',
-    'tr',
-    1);
+$url = "http://www.staropramen.cz/hospody/brno-zelny-trh";
+$text = getFoodMenuPotrafenaHusa();
 $color = "#CD175C";
 createAttachment($title, $url, $text, $color);
 
