@@ -1,0 +1,3 @@
+<?php
+	define("USER_ZOMATO_KEY", "YOUR_SECRET_ZOMATO_KEY");
+?>

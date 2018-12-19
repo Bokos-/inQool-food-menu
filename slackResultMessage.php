@@ -22,7 +22,7 @@ function createAttachment($title, $url, $text, $color) {
     global $slackResult;
 
     $object = array();
-    $object['pretext'] = $title;
+    $object['pretext'] = strtoupper($title);
     $object['text'] = $text;
     $object['color'] = $color;
     $object['footer'] = $url;

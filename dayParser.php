@@ -1,6 +1,7 @@
 <?php
 require_once 'simple_html_dom.php';
 require_once "removeAccents.php";
+require_once "config.php";
 
 $days = [
     "PONDĚLÍ",
@@ -55,39 +56,47 @@ function getResultString($text, $removeChars = 0) {
 
 function getFoodMenu($url, $bodySelector, $daySelector, $bodySelectorIndex = 0, $removeChars = 0)
 {
-    $result = "";
-    $doc = file_get_html($url);
-    $menuTable = $doc->find($bodySelector)[$bodySelectorIndex];
-    $dayFound = false;
+	try {
+	    $result = "";
+	    $doc = file_get_html($url);
+	    if (!$doc) {
+	    	return "";
+	    }
+	    
+	    $menuTable = $doc->find($bodySelector)[$bodySelectorIndex];
+	    $dayFound = false;
 
-    if (!$menuTable) {
-        return $result;
-    }
+	    if (!$menuTable) {
+	        return $result;
+	    }
 
-    $rows = $menuTable->find($daySelector);
+	    $rows = $menuTable->find($daySelector);
 
-    if (!$rows) {
-        return $result;
-    }
+	    if (!$rows) {
+	        return $result;
+	    }
 
-    foreach ($rows as $row) {
+	    foreach ($rows as $row) {
 
-        $text = convertTextToUsableState($row->plaintext);
+	        $text = convertTextToUsableState($row->plaintext);
 
-        if ($dayFound) {
-            if (textContainsAnyDay($text)) {
-                break;
-            }
-            $result .= getResultString($text, $removeChars);
+	        if ($dayFound) {
+	            if (textContainsAnyDay($text)) {
+	                break;
+	            }
+	            $result .= getResultString($text, $removeChars);
 
-        } else {
-            if (textContainsToday($text)) {
-                $dayFound = true;
-            }
-        }
-    }
+	        } else {
+	            if (textContainsToday($text)) {
+	                $dayFound = true;
+	            }
+	        }
+	    }
 
-    return $result;
+	    return $result;
+	} catch (Exception $e) {
+		return "";
+	}
 }
 
 function getZomatoDailyMenuAsString($restaurantId)
@@ -128,7 +137,7 @@ function fetchZomatoDailyMenu($restaurantId)
 
     // GET KEY https://developers.zomato.com/api
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'user_key: USER_ZOMATO_API_KEY'
+        'user_key: ' . USER_ZOMATO_KEY
     ));
 
     $content = curl_exec($ch);
@@ -139,11 +148,19 @@ function fetchZomatoDailyMenu($restaurantId)
 
 function getFoodMenuUZlatehoMeceAsString() {
     $page = file_get_html('http://www.uzlatehomece.cz/denni-menu/');
+    if (!$page) {
+    	return "";
+    }
+
     $findIFrame = $page->find('.menu .container article iframe');
     if (!$findIFrame) return "";
 
     $result = "";
     $dailyMenu = file_get_html($findIFrame[0]->src);
+
+    if (!$dailyMenu) {
+    	return "";
+    }
 
     foreach ($dailyMenu->find("div.content") as $content) {
         $day = $content->find('h2');
@@ -164,6 +181,10 @@ function getFoodMenuUZlatehoMeceAsString() {
 function getFoodMenuPotrafenaHusa() {
     $url = "http://www.staropramen.cz/hospody/brno-zelny-trh";
     $doc = file_get_html($url);
+
+    if (!$doc) {
+    	return "";
+    }
 
     $result = "";
     $dailyMenu = $doc->find("#denni-menu .is-open")[0];

@@ -2,6 +2,5 @@
 `php obed.php`
 
 # Before Run
-- get and set Zomato API key in dayParser.php :: 130
-- (Replace USER_ZOMATO_API_KEY)
-- Key: https://developers.zomato.com/api
+- rename config.example.php on config.php
+- set Zomato API key in config.php ( get your key https://developers.zomato.com/api )
