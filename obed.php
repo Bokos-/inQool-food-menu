@@ -105,13 +105,6 @@ $text = getZomatoDailyMenuAsString(16507371);
 $color = "#227c12";
 createAttachment($title, $url, $text, $color);
 
-// Štatl
-$title = "Štatl";
-$url = "https://www.zomato.com/brno/%C5%A1tatl-brno-m%C4%9Bsto-brno-st%C5%99ed/daily-menu";
-$text = getZomatoDailyMenuAsString(16507371);
-$color = "#227c12";
-createAttachment($title, $url, $text, $color);
-
 // Suzie's Steak pub
 $title = "Suzie's Steak pub";
 $url = "https://www.zomato.com/brno/suzies-steak-pub-veve%C5%99%C3%AD-brno-st%C5%99ed/daily-menu";
