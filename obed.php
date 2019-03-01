@@ -4,20 +4,20 @@ require_once 'slackResultMessage.php';
 require_once 'cache.php';
 
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 header('Content-Type: application/json; charset=utf-8');
 
 if (!isset($_GET['refresh'])) {
     $myCache = getCache();
     if ($myCache !== null) {
-        printResult($myCache);
+        printOutput($myCache);
         return;
     }
 }
 
 // Potrafena Husa
-$title = "POTRAFENÁ HUSA";
+$title = "POTRAFENÁ HUSA :moneybag:";
 $url = "http://www.staropramen.cz/hospody/brno-zelny-trh";
 $text = getFoodMenuPotrafenaHusa();
 $color = "#CD175C";
@@ -26,7 +26,7 @@ createAttachment($title, $url, $text, $color);
 // Vesela Cajovna
 $title = "VESELÁ ČAJOVŇA";
 $url = "http://www.veselacajovna.cz/tydenni-nabidka/";
-$text = "Ako menu je len obrázok.";
+$text = "";
 $color = "#DFB74A";
 createAttachment($title, $url, $text, $color);
 
@@ -92,7 +92,7 @@ $color = "#1370A6";
 createAttachment($title, $url, $text, $color);
 
 // U Zlateho mece
-$title = "U ZLATEHO MECE";
+$title = "U ZLATEHO MECE :inqool:";
 $url = "http://www.uzlatehomece.cz/denni-menu/";
 $text = getFoodMenuUZlatehoMeceAsString();
 $color = "#9DCFDD";
@@ -113,15 +113,13 @@ $color = "#3a0000";
 createAttachment($title, $url, $text, $color);
 
 // Suzie's
-$title = "Suzie's";
+$title = "Suzie's :beers:";
 $url = "https://www.zomato.com/brno/suzies-veve%C5%99%C3%AD-brno-st%C5%99ed/daily-menu";
 $text = getZomatoDailyMenuAsString(16506939);
 $color = "#d32c50";
 createAttachment($title, $url, $text, $color);
 
 
-
-
 // Output
 createCache(getResult());
-printResult();
+printOutput();
